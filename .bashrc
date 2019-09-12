@@ -128,5 +128,8 @@ export EDITOR="$VISUAL"
 
 set -o vi
 
+alias vim="nvim"
+alias vi="nvim"
+
 #PS1='\e[33;1m\u@\h: \e[31m\W\e[0m\$ '
 
