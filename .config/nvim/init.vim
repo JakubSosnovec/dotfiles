@@ -2,8 +2,7 @@ set nu
 inoremap jj <Esc>
 set cindent
 
-map <C-K> :pyf /usr/share/clang/clang-format-6.0/clang-format.py
-imap <C-K> <c-o>:pyf /usr/share/clang/clang-format-6.0/clang-format.py
+map <C-K> :pyf /usr/share/clang/clang-format-8/clang-format.py
 
 filetype plugin indent on
 set tabstop=2
@@ -13,10 +12,35 @@ set mouse=a
 set wildmenu
 set path+=**
 
-call plug#begin('~/.local/share/nvim/plugged')
-Plug 'ycm-core/YouCompleteMe'
+set splitbelow
+set splitright
+set cursorline
+hi CursorLine   cterm=NONE ctermbg=16 ctermfg=NONE
 
+"set rtp+=~/.config/nvim/bundle/Vundle.cim
+
+let g:python_host_prog  = '/usr/bin/python'
+let g:python3_host_prog  = '/usr/bin/python3'
+
+call plug#begin('~/.local/share/nvim/plugged')
+Plug '~/.config/nvim/YouCompleteMe'
+
+Plug '~/.fzf'
 Plug 'bling/vim-airline'
 call plug#end()
 
 autocmd BufNewFile,BufRead *.cu set filetype=cpp
+
+let g:ycm_filetype_whitelist = {'python': 1, 'cpp': 1, 'txt': 1}
+let g:ycm_confirm_extra_conf = 0
+let g:ycm_python_binary_path = '/usr/bin/python'
+
+let mapleader=","
+nnoremap <leader>gg :YcmCompleter GoToDefinition<CR>
+nnoremap <leader>gd :YcmCompleter GetDoc<CR>
+nnoremap <leader>gt :YcmCompleter GetType<CR>
+nnoremap <leader>gr :YcmCompleter GoToReferences<CR>
+nnoremap <leader>pd Oimport pdb; pdb.set_trace()<Esc>
+map <leader><C-K> :%!autopep8 -
+map <leader>n :nohl<CR>
+
