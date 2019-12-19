@@ -41,6 +41,7 @@ nnoremap <leader>gd :YcmCompleter GetDoc<CR>
 nnoremap <leader>gt :YcmCompleter GetType<CR>
 nnoremap <leader>gr :YcmCompleter GoToReferences<CR>
 nnoremap <leader>pd Oimport pdb; pdb.set_trace()<Esc>
+map <leader>gv :vim // **/*.py<CR>
 map <leader><C-K> :%!autopep8 -
 map <leader>n :nohl<CR>
 
