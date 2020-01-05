@@ -23,8 +23,7 @@ let g:python_host_prog  = '/usr/bin/python'
 let g:python3_host_prog  = '/usr/bin/python3'
 
 call plug#begin('~/.local/share/nvim/plugged')
-Plug '~/.config/nvim/YouCompleteMe'
-
+Plug 'ycm-core/YouCompleteMe'
 Plug '~/.fzf'
 Plug 'bling/vim-airline'
 call plug#end()
@@ -40,8 +39,5 @@ nnoremap <leader>gg :YcmCompleter GoToDefinition<CR>
 nnoremap <leader>gd :YcmCompleter GetDoc<CR>
 nnoremap <leader>gt :YcmCompleter GetType<CR>
 nnoremap <leader>gr :YcmCompleter GoToReferences<CR>
-nnoremap <leader>pd Oimport pdb; pdb.set_trace()<Esc>
-map <leader>gv :vim // **/*.py<CR>
-map <leader><C-K> :%!autopep8 -
 map <leader>n :nohl<CR>
 
