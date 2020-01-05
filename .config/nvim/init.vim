@@ -26,13 +26,18 @@ call plug#begin('~/.local/share/nvim/plugged')
 Plug 'ycm-core/YouCompleteMe'
 Plug '~/.fzf'
 Plug 'bling/vim-airline'
+Plug 'arakashic/chromatica.nvim'
 call plug#end()
 
 autocmd BufNewFile,BufRead *.cu set filetype=cpp
 
+" ycm config
 let g:ycm_filetype_whitelist = {'python': 1, 'cpp': 1, 'txt': 1}
 let g:ycm_confirm_extra_conf = 0
 let g:ycm_python_binary_path = '/usr/bin/python'
+
+" chromatica config
+let g:chromatica#libclang_path='/home/deas/.local/share/nvim/plugged/YouCompleteMe/third_party/ycmd/third_party/clang/lib/libclang.so.8'
 
 let mapleader=","
 nnoremap <leader>gg :YcmCompleter GoToDefinition<CR>
