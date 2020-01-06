@@ -2,7 +2,7 @@ set nu
 inoremap jj <Esc>
 set cindent
 
-map <C-K> :pyf /usr/share/clang/clang-format-8/clang-format.py
+map <C-K> :pyf /usr/share/clang/clang-format-6.0/clang-format.py
 
 filetype plugin indent on
 set tabstop=2
@@ -25,6 +25,7 @@ let g:python3_host_prog  = '/usr/bin/python3'
 call plug#begin('~/.local/share/nvim/plugged')
 Plug 'ycm-core/YouCompleteMe'
 Plug '~/.fzf'
+Plug 'junegunn/fzf.vim'
 Plug 'bling/vim-airline'
 Plug 'arakashic/chromatica.nvim'
 call plug#end()
