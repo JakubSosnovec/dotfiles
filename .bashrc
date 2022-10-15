@@ -16,8 +16,8 @@ HISTCONTROL=ignoreboth
 shopt -s histappend
 
 # for setting history length see HISTSIZE and HISTFILESIZE in bash(1)
-HISTSIZE=1000
-HISTFILESIZE=2000
+HISTSIZE=5000
+HISTFILESIZE=10000
 
 # check the window size after each command and, if necessary,
 # update the values of LINES and COLUMNS.
@@ -88,8 +88,7 @@ fi
 #export GCC_COLORS='error=01;31:warning=01;35:note=01;36:caret=01;32:locus=01:quote=01'
 
 # some more ls aliases
-alias ll='ls -alF'
-alias la='ls -A'
+alias ll='ls -alhF'
 alias l='ls -CF'
 
 # Add an "alert" alias for long running commands.  Use like so:
@@ -130,10 +129,15 @@ set -o vi
 
 alias vim="nvim"
 alias vi="nvim"
-
-set splitbelow
+alias Ag="ag"
 
 #PS1='\e[33;1m\u@\h: \e[31m\W\e[0m\$ '
 
-[ -f ~/.fzf.bash ] && source ~/.fzf.bash
+source /usr/share/doc/fzf/examples/key-bindings.bash
+source /usr/share/doc/fzf/examples/completion.bash
 
+shopt -s autocd     # Avoid cd all the time
+shopt -s histappend #  If set, the history list is appended to the history file when the shell exits, rather than overwriting the history file. 
+
+alias gs="git status"
+alias gd="git diff"
