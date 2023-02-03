@@ -1,24 +1,21 @@
 set nu
-inoremap jj <Esc>
 set cindent
-
-map <C-K> :py3f /usr/share/clang/clang-format-10/clang-format.py
-
-filetype plugin indent on
 set tabstop=4
 set shiftwidth=4
 set mouse=a
 set wildmenu
 set path+=**
 set expandtab
-
 set splitbelow
 set splitright
 set cursorline
+set hlsearch
+set noswapfile
+set completeopt=menu,menuone,noinsert,noselect
+
+filetype plugin indent on
 
 hi CursorLine   cterm=NONE ctermbg=16 ctermfg=NONE
-hi Search ctermbg=DarkBlue
-hi Search ctermfg=White
 
 let g:python_host_prog  = '/usr/bin/python'
 let g:python3_host_prog  = '/usr/bin/python3'
@@ -34,31 +31,45 @@ Plug 'hrsh7th/cmp-nvim-lsp'
 Plug 'hrsh7th/cmp-buffer'
 Plug 'hrsh7th/cmp-path'
 Plug 'hrsh7th/cmp-cmdline'
+Plug 'hrsh7th/cmp-omni'
 Plug 'hrsh7th/nvim-cmp'
 
 Plug 'nvim-treesitter/nvim-treesitter'
+Plug 'mhartington/oceanic-next'
 
 Plug 'hrsh7th/cmp-vsnip'
 Plug 'hrsh7th/vim-vsnip'
+Plug 'hrsh7th/vim-vsnip-integ'
 call plug#end()
 
+" Theme
+syntax enable
+colorscheme OceanicNext
+let g:airline_theme='oceanicnext'
+
+map <C-K> :py3f /usr/share/clang/clang-format-10/clang-format.py
+
 let mapleader=","
-map <leader>n :nohl<CR>
-map <leader>f :Files<CR>
-map <leader>b :Buffers<CR>
-map <leader>l :BLines<CR>
-map <leader>h :History<CR>
-map <leader>s :b#<CR>
+inoremap jj <Esc>
+"Un-highlight
+nnoremap <leader>n :nohl<CR>
+"Switch to previous buffer
+nnoremap <leader>s :b#<CR>
+"Find files that are not git-ignored, use :Files to search all
+nnoremap <leader>f :GFiles<CR>
+"Find files that are open in buffers
+nnoremap <leader>b :Buffers<CR>
+"Search in current buffer
+nnoremap <leader>l :BLines<CR>
+"History of open files in nvim
+nnoremap <leader>h :History<CR>
+"History of commands
+nnoremap <leader>c :History:<CR>
+"Search recursively in all sub-directories
+nnoremap <leader>a :Ag<CR>
 
-"In visual mode, you can hit <leader> to full-text recursively search
-vnoremap <leader> y:Ag \V<C-R>=escape(@",'/\')<CR><CR>
-
-"I would like to be able to do CTRL+P and CTRL+N in command mode to go up and
-"down in history, but this doesnt quite work:
-"cmap <C-p> <Up>
-"cmap <C-n> <Down>
-
-set completeopt=menu,menuone,noinsert,noselect
+"In visual mode, you can hit / to Ag-search for the selected text
+vnoremap / y:Ag \V<C-R>=escape(@",'/\')<CR><CR>
 
 lua <<EOF
   -- Set up nvim-cmp.
@@ -115,7 +126,8 @@ lua <<EOF
     }),
     sources = cmp.config.sources({
       { name = 'nvim_lsp' },
-      { name = 'vsnip' }, -- For vsnip users.
+      --{ name = 'vsnip' }, -- For vsnip users.
+      { name = 'omni' },
     }, {
       { name = 'buffer' },
     })
@@ -148,11 +160,49 @@ lua <<EOF
     })
   })
 
+  -- Diagnostic mappings
+  -- See `:help vim.diagnostic.*` for documentation on any of the below functions
+  local opts = { noremap=true, silent=true }
+  vim.keymap.set('n', '<space>e', vim.diagnostic.open_float, opts)
+  vim.keymap.set('n', '[d', vim.diagnostic.goto_prev, opts)
+  vim.keymap.set('n', ']d', vim.diagnostic.goto_next, opts)
+  vim.keymap.set('n', '<space>q', vim.diagnostic.setloclist, opts)
+
+  -- Use an on_attach function to only map the following keys
+  -- after the language server attaches to the current buffer
+  local on_attach = function(client, bufnr)
+    -- Enable completion triggered by <c-x><c-o>
+    vim.api.nvim_buf_set_option(bufnr, 'omnifunc', 'v:lua.vim.lsp.omnifunc')
+  
+    -- Mappings.
+    -- See `:help vim.lsp.*` for documentation on any of the below functions
+    local bufopts = { noremap=true, silent=true, buffer=bufnr }
+    vim.keymap.set('n', 'gD', vim.lsp.buf.declaration, bufopts)
+    vim.keymap.set('n', 'gd', vim.lsp.buf.definition, bufopts)
+    vim.keymap.set('n', 'gr', vim.lsp.buf.references, bufopts)
+    vim.keymap.set('n', 'K', vim.lsp.buf.hover, bufopts)
+    vim.keymap.set('n', 'gi', vim.lsp.buf.implementation, bufopts) -- I dont use this
+    vim.keymap.set('n', '<C-l>', vim.lsp.buf.signature_help, bufopts) -- I dont use this
+    vim.keymap.set('n', '<space>wa', vim.lsp.buf.add_workspace_folder, bufopts) -- I dont use this
+    vim.keymap.set('n', '<space>wr', vim.lsp.buf.remove_workspace_folder, bufopts) -- I dont use this
+    vim.keymap.set('n', '<space>wl', function() -- I dont use this
+      print(vim.inspect(vim.lsp.buf.list_workspace_folders()))
+    end, bufopts)
+    vim.keymap.set('n', '<space>rn', vim.lsp.buf.rename, bufopts) -- I dont use this
+    vim.keymap.set('n', '<space>ca', vim.lsp.buf.code_action, bufopts) -- I dont use this
+    vim.keymap.set('n', '<space>f', function() vim.lsp.buf.format { async = true } end, bufopts) -- I dont use this, probably same as clang-format
+  end
+
   -- Set up lspconfig.
   local capabilities = require('cmp_nvim_lsp').default_capabilities()
   -- Replace <YOUR_LSP_SERVER> with each lsp server you've enabled.
   require('lspconfig')['clangd'].setup {
-    capabilities = capabilities
+    capabilities = capabilities,
+    on_attach = on_attach
+  }
+  require('lspconfig')['pyright'].setup {
+    capabilities = capabilities,
+    on_attach = on_attach
   }
 
   require'nvim-treesitter.configs'.setup {
