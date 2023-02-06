@@ -180,7 +180,9 @@ lua <<EOF
     vim.keymap.set('n', 'gD', vim.lsp.buf.declaration, bufopts)
     vim.keymap.set('n', 'gd', vim.lsp.buf.definition, bufopts)
     vim.keymap.set('n', 'gr', vim.lsp.buf.references, bufopts)
+    vim.keymap.set('n', 'gf', vim.lsp.buf.code_action, bufopts)
     vim.keymap.set('n', 'K', vim.lsp.buf.hover, bufopts)
+    vim.keymap.set('n', '<space>rn', vim.lsp.buf.rename, bufopts)
     vim.keymap.set('n', 'gi', vim.lsp.buf.implementation, bufopts) -- I dont use this
     vim.keymap.set('n', '<C-l>', vim.lsp.buf.signature_help, bufopts) -- I dont use this
     vim.keymap.set('n', '<space>wa', vim.lsp.buf.add_workspace_folder, bufopts) -- I dont use this
@@ -188,8 +190,6 @@ lua <<EOF
     vim.keymap.set('n', '<space>wl', function() -- I dont use this
       print(vim.inspect(vim.lsp.buf.list_workspace_folders()))
     end, bufopts)
-    vim.keymap.set('n', '<space>rn', vim.lsp.buf.rename, bufopts) -- I dont use this
-    vim.keymap.set('n', '<space>ca', vim.lsp.buf.code_action, bufopts) -- I dont use this
     vim.keymap.set('n', '<space>f', function() vim.lsp.buf.format { async = true } end, bufopts) -- I dont use this, probably same as clang-format
   end
 
@@ -197,6 +197,14 @@ lua <<EOF
   local capabilities = require('cmp_nvim_lsp').default_capabilities()
   -- Replace <YOUR_LSP_SERVER> with each lsp server you've enabled.
   require('lspconfig')['clangd'].setup {
+    cmd = {
+      "clangd",
+      "--background-index",
+      "--clang-tidy",
+      "--completion-style=bundled",
+      "--cross-file-rename",
+      "--header-insertion=iwyu",
+    },
     capabilities = capabilities,
     on_attach = on_attach
   }
