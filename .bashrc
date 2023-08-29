@@ -131,17 +131,13 @@ alias vim="nvim"
 alias vi="nvim"
 alias Ag="ag"
 
-set splitbelow
-
 #PS1='\e[33;1m\u@\h: \e[31m\W\e[0m\$ '
 
-# Not sure whats the proper fzf setup way
 source /usr/share/doc/fzf/examples/key-bindings.bash
+source /usr/share/doc/fzf/examples/completion.bash
 
 shopt -s autocd     # Avoid cd all the time
 shopt -s histappend #  If set, the history list is appended to the history file when the shell exits, rather than overwriting the history file. 
 
 alias gs="git status"
 alias gd="git diff"
-
-export PATH=$PATH:~/.local/bin
