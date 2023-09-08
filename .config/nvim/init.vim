@@ -43,10 +43,9 @@ Plug 'hrsh7th/cmp-cmdline'
 Plug 'hrsh7th/nvim-cmp'
 Plug 'hrsh7th/cmp-vsnip'
 Plug 'hrsh7th/vim-vsnip'
-Plug 'petertriho/cmp-git' " This should provide interesting autocompletion in `git commit` buffers??
+Plug 'petertriho/cmp-git' "This should provide interesting autocompletion in `git commit` buffers??
 Plug 'mhartington/formatter.nvim'
 Plug 'astral-sh/ruff-lsp'
-
 
 Plug 'nvim-treesitter/nvim-treesitter'
 Plug 'mhartington/oceanic-next'
@@ -64,6 +63,7 @@ nnoremap <leader>n :nohl<CR>
 "Switch to previous buffer
 nnoremap <leader>s :b#<CR>
 
+"fzf commands
 "Find files
 nnoremap <leader>f :Files<CR>
 "Find files that are not git-ignored
@@ -79,12 +79,10 @@ nnoremap <leader>c :History:<CR>
 "Search recursively in all sub-directories
 nnoremap <leader>a :Rg<CR>
 "Apply black code formatter
-"Disabling in favour of formatter.nvim
-"nnoremap <leader>k :!black %<CR>
+"nnoremap <leader>k :!black %<CR> "Disabling in favour of formatter.nvim
 
 lua require('lua_config')
 
 "Using formatter.nvim
 nnoremap <silent> <leader>k :Format<CR>
 nnoremap <silent> <leader>K :FormatWrite<CR>
-

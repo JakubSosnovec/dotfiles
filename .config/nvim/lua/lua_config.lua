@@ -10,7 +10,18 @@ require("mason").setup({
 
 require("mason-lspconfig").setup({
 	-- A list of servers to automatically install if they're not already installed
-	ensure_installed = { "pyright", "lua_ls", "rust_analyzer" },
+	ensure_installed = { "pyright", "lua_ls" },
+})
+
+-- Automatic server setup https://github.com/williamboman/mason-lspconfig.nvim#automatic-server-setup-advanced-feature
+require("mason-lspconfig").setup_handlers({
+	-- The first entry (without a key) will be the default handler
+	-- and will be called for each installed server that doesn't have
+	-- a dedicated handler.
+	function(server_name) -- default handler (optional)
+		require("lspconfig")[server_name].setup({})
+	end,
+	-- Next, you can provide a dedicated handler for specific servers.
 })
 
 -- Global mappings.
@@ -36,7 +47,7 @@ vim.api.nvim_create_autocmd("LspAttach", {
 		vim.keymap.set("n", "gd", vim.lsp.buf.definition, opts)
 		vim.keymap.set("n", "K", vim.lsp.buf.hover, opts)
 		vim.keymap.set("n", "gi", vim.lsp.buf.implementation, opts)
-		--vim.keymap.set("n", "<C-k>", vim.lsp.buf.signature_help, opts)
+		vim.keymap.set("n", "<C-k>", vim.lsp.buf.signature_help, opts) -- Show information about parameters of the function/method
 		vim.keymap.set("n", "<space>wa", vim.lsp.buf.add_workspace_folder, opts)
 		vim.keymap.set("n", "<space>wr", vim.lsp.buf.remove_workspace_folder, opts)
 		vim.keymap.set("n", "<space>wl", function()
@@ -152,11 +163,6 @@ require("formatter").setup({
 		},
 	},
 })
-
--- Configure `ruff-lsp`.
--- See: https://github.com/neovim/nvim-lspconfig/blob/master/doc/server_configurations.md#ruff_lsp
--- For the default config, along with instructions on how to customize the settings
-require('lspconfig').ruff_lsp.setup {}
 
 -- Hint: start visual mode with the same area as the previous area and the same mode
 vim.keymap.set("v", "<", "<gv", opts)
