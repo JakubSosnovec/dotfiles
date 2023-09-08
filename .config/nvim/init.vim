@@ -3,8 +3,6 @@ inoremap jj <Esc>
 filetype plugin indent on
 
 set nu
-set rnu
-
 set cindent
 set tabstop=4
 set shiftwidth=4
@@ -28,10 +26,6 @@ set undofile                    "see :help undodir and :help undofile
 set showmatch                   "display matching bracket or parenthesis
 set noswapfile
 
-hi CursorLine   cterm=NONE ctermbg=16 ctermfg=NONE
-hi Search ctermbg=DarkBlue
-hi Search ctermfg=White
-
 call plug#begin('~/.local/share/nvim/plugged')
 Plug 'junegunn/fzf'
 Plug 'junegunn/fzf.vim'
@@ -49,6 +43,10 @@ Plug 'hrsh7th/cmp-cmdline'
 Plug 'hrsh7th/nvim-cmp'
 Plug 'hrsh7th/cmp-vsnip'
 Plug 'hrsh7th/vim-vsnip'
+Plug 'petertriho/cmp-git' " This should provide interesting autocompletion in `git commit` buffers??
+Plug 'mhartington/formatter.nvim'
+Plug 'astral-sh/ruff-lsp'
+
 
 Plug 'nvim-treesitter/nvim-treesitter'
 Plug 'mhartington/oceanic-next'
@@ -81,6 +79,12 @@ nnoremap <leader>c :History:<CR>
 "Search recursively in all sub-directories
 nnoremap <leader>a :Rg<CR>
 "Apply black code formatter
-nnoremap <leader>k :!black %<CR>
+"Disabling in favour of formatter.nvim
+"nnoremap <leader>k :!black %<CR>
 
 lua require('lua_config')
+
+"Using formatter.nvim
+nnoremap <silent> <leader>k :Format<CR>
+nnoremap <silent> <leader>K :FormatWrite<CR>
+
