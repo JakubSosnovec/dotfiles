@@ -1,3 +1,6 @@
+export BASH_CONF="bashrc"
+
+
 # ~/.bashrc: executed by bash(1) for non-login shells.
 # see /usr/share/doc/bash/examples/startup-files (in the package bash-doc)
 # for examples
@@ -25,7 +28,8 @@ shopt -s checkwinsize
 
 # If set, the pattern "**" used in a pathname expansion context will
 # match all files and zero or more directories and subdirectories.
-shopt -s globstar
+# Not working on Mac
+#shopt -s globstar
 
 # make less more friendly for non-text input files, see lesspipe(1)
 [ -x /usr/bin/lesspipe ] && eval "$(SHELL=/bin/sh lesspipe)"
@@ -88,8 +92,10 @@ fi
 #export GCC_COLORS='error=01;31:warning=01;35:note=01;36:caret=01;32:locus=01:quote=01'
 
 # some more ls aliases
-alias ll='ls -alhF'
+alias ll='eza -la'
 alias l='ls -CF'
+
+alias cat=bat
 
 # Add an "alert" alias for long running commands.  Use like so:
 #   sleep 10; alert
@@ -131,13 +137,35 @@ alias vim="nvim"
 alias vi="nvim"
 alias Ag="ag"
 
-#PS1='\e[33;1m\u@\h: \e[31m\W\e[0m\$ '
+#source /usr/share/doc/fzf/examples/key-bindings.bash
+#source /usr/share/doc/fzf/examples/completion.bash
 
-source /usr/share/doc/fzf/examples/key-bindings.bash
-source /usr/share/doc/fzf/examples/completion.bash
+# Not working on Mac
+#shopt -s autocd     # Avoid cd all the time
 
-shopt -s autocd     # Avoid cd all the time
 shopt -s histappend #  If set, the history list is appended to the history file when the shell exits, rather than overwriting the history file. 
 
 alias gs="git status"
 alias gd="git diff"
+
+[ -f ~/.fzf.bash ] && source ~/.fzf.bash
+
+# https://apple.stackexchange.com/questions/148901/why-does-my-brew-installation-not-work
+eval $(/opt/homebrew/bin/brew shellenv)
+
+# snowsql
+export PATH=/Applications/SnowSQL.app/Contents/MacOS:$PATH
+
+alias python=python3
+alias pip=pip3
+alias activate="source .venv/bin/activate"
+
+# Created by `pipx` on 2023-09-14 08:46:33
+export PATH="$PATH:/Users/jsosnovec/.local/bin"
+eval "$(register-python-argcomplete pipx)"
+. "$HOME/.cargo/env"
+
+# go
+export GOPATH=~/go
+export PATH=$PATH:$GOPATH/bin
+

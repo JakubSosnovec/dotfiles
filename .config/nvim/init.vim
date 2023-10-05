@@ -49,6 +49,11 @@ Plug 'astral-sh/ruff-lsp'
 
 Plug 'nvim-treesitter/nvim-treesitter'
 Plug 'mhartington/oceanic-next'
+
+Plug 'tpope/vim-vinegar' "Enable '-' in normal mode to go to netrw selected on the current file.
+
+Plug 'ray-x/go.nvim'
+Plug 'ray-x/guihua.lua' "Recommended if need floating window support
 call plug#end()
 
 " Theme
